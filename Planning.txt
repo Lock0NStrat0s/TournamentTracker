@@ -175,5 +175,9 @@ Used XML to comment summary of each property
 
 Planning Step 7: Form Building
 
+Created all forms with appropriate controls
 
+/_//_//_//_//_//_//_//_//_//_//_//_//_//_//_//_//_//_//_//_//_//_//_//_//_//_//_//_//_//_//_//_//_//_//_//_//_//_//_//_//_//_//_//_//_//_/
+
+Planning Step 8: SQL Database Design
 
