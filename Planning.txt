@@ -1,0 +1,179 @@
+Tournament Tracker:
+
+Planning Step 1: Initial Planning
+
+Requirements:
+1. Track games played and their outcome (who won).
+2. Multiple competitors play in the tournament.
+3. Creates a tournament plan (who plays in what order).
+4. Schedules games.
+5. A single loss eliminates a player.
+6. The last player standing is the winner.
+
+Questions:
+1. How many players will the tournament handle? Is it variable?
+2. If a tournament has less than the full complement of players, how do we handle it?
+3. Should the ordering of who plays each other be random or ordered by input order?
+4. Should we schedule the game or are they just played whenever?
+5. If the games are scheduled, how does the system know when to schedule games for?
+6. If the games are played whenever, can a game from the second be played before the first round is complete?
+7. Does the system need to store a score of some kind or just who won?
+8. What type of front-end should this system have (form, webpage, app, etc.)?
+9. Where will the data be stored?
+10. Will this system handle entry fees, prizes, or other payouts?
+11. What type of reporting is needed?
+12. Who can fill in the results of a game?
+13. Are there varying levels of access?
+14. Should this system contact users about upcoming games?
+15. Is each player on their own or can teams use this tournament tracker?
+
+/_//_//_//_//_//_//_//_//_//_//_//_//_//_//_//_//_//_//_//_//_//_//_//_//_//_//_//_//_//_//_//_//_//_//_//_//_//_//_//_//_//_//_//_//_//_/
+
+Planning Step 2: Overview Planning
+-------------------------------------------------------------------------------------------------
+1. How many players will the tournament handle? Is it variable?
+ANSWER:
+	The application should be able to handle a variable number of players in a tournament.
+-------------------------------------------------------------------------------------------------
+2. If a tournament has less than the full complement of players, how do we handle it?
+ANSWER:
+	A tournament with less than the perfect number (a multiple of 2) should add in "byes." Basically, certain people selected at random get to skip the first round and act as if they've won.
+-------------------------------------------------------------------------------------------------
+3. Should the ordering of who plays each other be random or ordered by input order?
+ANSWER:
+	The ordering of the tournament should be random.
+-------------------------------------------------------------------------------------------------
+4. Should we schedule the game or are they just played whenever?
+ANSWER:
+	The games should be played in whatever order and whenever the players want to play them. 
+-------------------------------------------------------------------------------------------------
+5. If the games are scheduled, how does the system know when to schedule games for?
+ANSWER:
+	They are not scheduled, so we do not care.
+-------------------------------------------------------------------------------------------------
+6. If the games are played whenever, can a game from the second be played before the first round is complete?
+ANSWER:
+	No. Each round should be fully comprehended before the next round is displayed.
+-------------------------------------------------------------------------------------------------
+7. Does the system need to store a score of some kind or just who won?
+ANSWER:
+	Storing a simple score would be nice. Just a number for each player. That way, the tracker can be flexible enough to handle a checkers tournament (the winner would have a 1 and the loser a 0) or a basketball tournament.
+-------------------------------------------------------------------------------------------------
+8. What type of front-end should this system have (form, webpage, app, etc.)?
+ANSWER:
+	The system should be a desktop system for now, but down the road we might want to make it an app or website.
+-------------------------------------------------------------------------------------------------
+9. Where will the data be stored?
+ANSWER:
+	Ideally, the data should be stored in a Microsoft SQL database but please put in an option to store to a text file instead.
+-------------------------------------------------------------------------------------------------
+10. Will this system handle entry fees, prizes, or other payouts?
+ANSWER:
+	Yes. The tournament should have the option of charging an entry fee. Prizes should also be an option, where the tournament admin chooses how much money to award a variable number of places. The total cash amount should not exceed the income from the tournament. A percentage-based system would also be nice to specify.
+-------------------------------------------------------------------------------------------------
+11. What type of reporting is needed?
+ANSWER:
+	A simple report specifying the outcome of the games per round as well as a report that specifies who won and how much they won. These can be just displayed on a form or they can be emailed to tournament competitors and the admin.
+-------------------------------------------------------------------------------------------------
+12. Who can fill in the results of a game?
+ANSWER:
+	Anyone using the application should be able to fill in the game scores.
+-------------------------------------------------------------------------------------------------
+13. Are there varying levels of access?
+ANSWER:
+	No. The only method of varied access is if the competitors are not allowed into the application and instead, they do everything via email.
+-------------------------------------------------------------------------------------------------
+14. Should this system contact users about upcoming games?
+ANSWER:
+	Yes, the system should email users that they are due to play in a round as well as who they are scheduled to play.
+-------------------------------------------------------------------------------------------------
+15. Is each player on their own or can teams use this tournament tracker?
+ANSWER:
+	The tournament tracker should be able to handle the addition of other members. All members should be treated as equals in that they all get tournament emails. Teams should also be able to name their team.
+-------------------------------------------------------------------------------------------------
+
+BIG PICTURE DESIGN:
+
+Structure: Windows Forms application and Class Library
+Data: SQL and/or Text File
+Users: One at a time on one application
+Key Concepts:
+	- Email
+	- SQL
+	- Custom Events
+	- Error Handling
+	- Interfaces
+	- Random Ordering
+	- Texting
+
+/_//_//_//_//_//_//_//_//_//_//_//_//_//_//_//_//_//_//_//_//_//_//_//_//_//_//_//_//_//_//_//_//_//_//_//_//_//_//_//_//_//_//_//_//_//_/
+
+Planning Step 3: Data Design
+
+Mapping the Data:
+
+Classes:
+1. Team:
+	- TeamMembers (List<Person>)
+	- TeamName (string)
+
+2. Person:
+	- FirstName (string)
+	- LastName (string)
+	- EmailAddress (string)
+	- CellphoneNumber (string)
+
+3. Tournament:
+	- TournamentName (string)
+	- EntryFee (decimal)
+	- EnteredTeams (List<Team>)
+	- Prizes (List<Prize>)
+	- Rounds (List<List<Matchup>>)
+
+4. Prize:
+	- PlaceNumber (int)
+	- PlaceName (string)
+	- PrizeAmount (decimal)
+	- PrizePercentage (double)
+
+5. Matchup:
+	- Entries (List<MatchupEntry>)
+	- Winner (Team)
+	- Loser (Team)
+	- MatchupRound (int)
+
+6. MatchupEntry:
+	- TeamCompeting (Team)
+	- Score (double)
+	- ParentMatchup (Matchup)
+
+/_//_//_//_//_//_//_//_//_//_//_//_//_//_//_//_//_//_//_//_//_//_//_//_//_//_//_//_//_//_//_//_//_//_//_//_//_//_//_//_//_//_//_//_//_//_/
+
+Planning Step 4: User Interface Design
+
+Forms:
+	1. View Tournament
+	2. Create Tournament
+	3. Create Team
+	4. Create Prize
+	5. Tournament Dashboard
+
+/_//_//_//_//_//_//_//_//_//_//_//_//_//_//_//_//_//_//_//_//_//_//_//_//_//_//_//_//_//_//_//_//_//_//_//_//_//_//_//_//_//_//_//_//_//_/
+
+Planning Step 5: Logic Planning
+
+Step by step discussion of all UI elements and processes
+
+/_//_//_//_//_//_//_//_//_//_//_//_//_//_//_//_//_//_//_//_//_//_//_//_//_//_//_//_//_//_//_//_//_//_//_//_//_//_//_//_//_//_//_//_//_//_/
+
+Planning Step 6: Class Library Creation
+
+Created class libraries on .NET FRAMEWORK
+Used XML to comment summary of each property
+
+/_//_//_//_//_//_//_//_//_//_//_//_//_//_//_//_//_//_//_//_//_//_//_//_//_//_//_//_//_//_//_//_//_//_//_//_//_//_//_//_//_//_//_//_//_//_/
+
+Planning Step 7: Form Building
+
+
+
